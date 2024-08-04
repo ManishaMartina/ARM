@@ -1,0 +1,326 @@
+-------------------LED BLINKING----------------
+#include <LPC214X.H>
+// Define LPC2148 Header File
+
+#define led IO1PIN // Define LED to Port1
+
+#define led1 IO1DIR // Define Port1 as output
+
+void delay(int x);
+
+int main()
+
+{
+
+PINSEL2 = 0x00000000; // Define port lines as GPIO
+
+led1 = 0x00010000; // Define P1.16as O/P
+
+led = 0x00000000; // Define P1.16 as zero
+
+while(1) // Loop forever
+
+{
+
+led = 0x00010000; // Turn ON P1.16
+
+delay(2000);
+
+led = 0x00000000; // Turn OFF P1.16
+
+delay(1500);
+
+}
+
+}
+
+void delay(int X)
+
+{
+
+unsigned int K,l;
+
+for(K=0;K<X;K++)
+	{
+
+for(l = 0;l < 100;l++);
+	}
+}
+
+
+---------------------LED BLINKING IN PORT WISE-------------------------------
+#include<LPC214X.h>
+void delay(unsigned int);
+int main()
+{
+	PINSEL0=0X00000000;
+	while(1)
+	{
+		IODIR0=0XFFFFFFFF;
+		IOSET0=0XFFFFFFFF;
+		delay(100);
+		IOCLR0=0XFFFFFFFF;
+	}
+}
+void delay(unsigned int dly)
+{
+	unsigned int i,j;
+	for(i=0;i<dly;i++)
+	{
+		for(j=0;j<100;j++);
+	}
+}
+---------------------------------LED BLINKING USING SWITCH---------------------
+
+#include<lpc214x.h>
+int main()
+{
+int a;
+PINSEL1=0x00000000;
+IODIR0=0x00000000;
+PINSEL2=0x00000000;
+IODIR1=0xFFFFFFFF;
+while(1)
+{
+a=IOPIN0>>16;
+IOPIN1<<16;
+}
+}
+
+------------------------------SEVEN SEGMENT------------------------------------
+#include<lpc214x.h>            //Header file for LPC214x Series microcontrollers
+
+void delay(int );              //Function declaration for delay
+
+int i;                         //Variable declared as integer
+
+unsigned int a[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F}; //integer array with numbers for display
+
+int main()
+
+{ 
+
+    IO0DIR=IO0DIR|0xffffffff;              //Sets direction as output for PORT 0 pins
+
+    while(1)
+
+    {
+
+        for(i=0;i<=9;i++)
+
+        {
+
+            IO0SET=IO0SET|a[i];           //sets corresponding pins HIGH
+
+            delay(9000);                  //Calls delay function
+
+            IO0CLR=IO0CLR|a[i];           //Sets corresponding pins LOW
+
+        }
+
+    }
+
+    return 0;
+
+}
+
+
+void delay(int k)              //Function for making delay
+
+{
+
+    int i,j;
+
+    for(i=0;i<k;i++)
+
+    for(j=0;j<=1000;j++);
+
+}
+-----------------------------------------------------SECOND TYPE SEVEN SEGMENT-------------------------------------------------
+#include<lpc214x.h>
+void delay(unsigned int );
+unsigned int []={0xC0,0XF9,0XA4,0XB0,0X99,0X92,0X82,0XF8,0XB0,0X90};
+int main()
+{
+PINSEL0=0X00000000;
+IODIR0=0XFFFFFFFF;
+while(1)
+{
+for(i=0;i<10;i++)
+{
+IOPIN=a[i];
+delay(500);
+}
+}
+}
+void delay(unsigned int dly)
+{
+unsigned int i,j;
+for(j=0;j<dly;j++)
+{
+for(i=0;i<100;i++);
+}
+}
+------------------------------------LED-------------------
+
+#include<lpc214x.h>
+void delay(unsigned int);
+int main()
+{
+	PINSEL0=0x00000000;
+	IODIR0=IODIR0|(0x01<<4);
+	while(1)
+	{
+		IOSET0=IOSET0|(0x01<<4);
+		delay(500);
+		IOCLR0=IOCLR0|(0x01<<4);
+	}
+}
+
+void delay(unsigned int dly)
+{
+	unsigned int i,j;
+	for(i=0;i<dly;i++)
+	{
+		for(j=0;j<100;j++);
+	}
+}
+
+-------------------------------------------------------LCD--------------------------------------------------------
+#include<lpc214x.h>
+int i,j,k;
+void delay(int a);
+void data(char dat);
+void com(char com);
+void init_lcd(void);
+void str_lcd(char*str);
+int main()
+{
+PINSEL0=0x00000000;
+PINSEL1=0x00000000;
+IODIR0=0xFFFFFFFF;
+init_lcd();
+while(1)
+{
+com(0x00);
+com()0x01;
+str_lcd("welcome");
+com(0xc0);
+string_lcd("livewire");
+for(k=0;k<10;k++)
+{
+com(0x1c);
+delay(10);
+}
+for(k=10;k>0;k--)
+{
+com(0x10);
+}
+}
+void data(char dat)
+{
+int k=0;
+k=dat;
+k=k<<16; 
+IOPIN0&=(0XFF000000);
+IOPIN1=K;
+IOCLR0=rs;
+IOCLR0=rw;
+IOSET0=en;
+delay(500);
+IOCLR0=en;
+}
+void init_lcd()
+{
+com(0x38);
+com(0x01);
+com(0x06);
+com(0x0c);
+com(0x80);
+}
+void str_lcd(char*str)
+{
+while(*str)
+data(str++);
+}
+void delay(int a)
+{
+for(i=0;i<a;i++)
+{
+for(j=0;j<1200;j++);
+}
+}
+
+
+
+--------------------------------------------------------------------KEYPAD WITH LCD------------------------------------------------------------------
+
+
+#include<lpc214x.h>
+#LCD(0xFF<<8)
+#RS(1<<16)
+#RW(1<<17)
+#EN(1<<18)
+r1(1<<16)
+r2(1<<17)
+r3(1<<18)
+r4(1<<19)
+c1(1<<20)
+c2(1<<21)
+c3(1<<22)
+c4(1<<23)
+unsigned int x=100;//defining delay
+void delay(unsigned int time);
+void lcd_init(void);
+void lcd_print(const unsigned char*str);
+void com(unsigned char com);
+void dat(unsigned char dat);
+unsigned char keypad(void);
+void keypad_delay(void);
+int main()
+{
+const unsigned char msg[]="press any key";
+PINSEL0=0X00000000;//PORT O GPIO 0 TO 15 
+IODIR0=0XFFFFFFFF;//PORT 0 PIN AS OUTPUT PIN
+PINSEL1=0X00000000;
+PINSEL2=0X00000000;
+IODIR1=0X00F00000;//PORT1 PIN 16TO 19 AS INPUT MODE AND PIN 20 TO 23 OUTPUT MODE
+lcd_init();
+lcd_print(msg);
+com(0x01);
+while(1)
+{
+dat(keypad());//printint msg on lcd
+
+-------------------------DC MOTOR--------------------------------------
+#include <lpc214x.h>
+void delay(unsigned int);
+int main()
+{
+PINSEL0=0x00000000;
+IODIR0=IODIR0|(0x01<<4);
+IODIR0=IODIR0|(0x01<<5);
+while(1)
+{
+	IOSET0=IOSET0|(0x01<<4);
+	IOCLR0=IOCLR0|(0x01<<5);
+	delay(50000);
+	IOSET0=IOSET0|(0x01<<5);
+	IOSET0=IOSET0|(0x01<<4);
+	delay(50000);
+	IOCLR0=IOCLR0|(0x01<<4);
+	IOSET0=IOSET0|(0x01<<5);
+	delay(50000);
+	IOCLR0=IOCLR0|(0x01<<5);  
+	IOCLR0=IOCLR0|(0x01<<4);
+	delay(50000);
+}
+}
+void delay(unsigned int dly)
+{
+	unsigned int i,j;
+	for(i=0;i<dly;i++)
+	{
+		for(j=0;j<200;j++);
+	}
+}
